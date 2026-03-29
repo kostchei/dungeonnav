@@ -133,19 +133,19 @@ const tests = [
     }
   },
   {
-    name: "level 1 xp total is 300",
+    name: "level 1 xp total is 350",
     fn: () => {
-      assert.equal(getLevelXpTotal(), 300);
+      assert.equal(getLevelXpTotal(), 350);
     }
   },
   {
     name: "encounter summary returns compact authored output",
     fn: () => {
       const summary = buildEncounterSummary();
-      assert.equal(summary.length, 5);
+      assert.equal(summary.length, 4);
       assert.deepEqual(summary[0], {
-        id: "a1-scout",
-        areaId: "A1",
+        id: "a2-guard",
+        areaId: "A2",
         enemyCount: 1,
         xpTotal: 25
       });

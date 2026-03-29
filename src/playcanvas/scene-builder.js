@@ -1,5 +1,5 @@
 import * as pc from "playcanvas";
-import { ROOM_RECTS, WALL_SEGMENTS } from "./layout.js";
+import { ROOM_RECTS, WALKABLE_AREAS, WALL_SEGMENTS } from "./layout.js";
 
 function createStandardMaterial(hexColor) {
   const material = new pc.StandardMaterial();
@@ -53,12 +53,11 @@ function buildRectFloor(worldRoot, rect, y, material) {
 }
 
 export function buildLevelGeometry(worldRoot) {
-  buildRectFloor(worldRoot, ROOM_RECTS.exterior, -0.1, materials.floor);
-  buildRectFloor(worldRoot, ROOM_RECTS.A1, -0.1, materials.corridor);
-  buildRectFloor(worldRoot, ROOM_RECTS.A2, -0.1, materials.corridor);
-  buildRectFloor(worldRoot, ROOM_RECTS.A3, -0.1, materials.floor);
-  buildRectFloor(worldRoot, ROOM_RECTS.A5, -0.1, materials.floor);
-  buildRectFloor(worldRoot, ROOM_RECTS.A4, -0.1, materials.floor);
+  colliders.length = 0;
+
+  for (const area of WALKABLE_AREAS) {
+    buildRectFloor(worldRoot, area.rect, -0.1, materials[area.material]);
+  }
 
   for (const wall of WALL_SEGMENTS) {
     createBox(
@@ -77,7 +76,7 @@ export function buildLevelGeometry(worldRoot) {
     });
   }
 
-  createBox(worldRoot, "altar", { x: 0, y: 0.4, z: 18.5 }, { x: 1.4, y: 0.8, z: 1.4 }, materials.accent);
+  createBox(worldRoot, "altar", { x: 12.6, y: 0.4, z: 10.8 }, { x: 1.8, y: 0.8, z: 1.2 }, materials.accent);
 }
 
 export function buildLights(app, worldRoot) {
@@ -114,7 +113,7 @@ export function buildLights(app, worldRoot) {
 }
 
 export function isInsideWalkableArea(position) {
-  return Object.values(ROOM_RECTS).some((rect) => (
+  return WALKABLE_AREAS.some(({ rect }) => (
     position.x >= rect.minX + 0.45 &&
     position.x <= rect.maxX - 0.45 &&
     position.z >= rect.minZ + 0.45 &&

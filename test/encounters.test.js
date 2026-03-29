@@ -16,15 +16,15 @@ test("individual encounter xp totals are computed from enemy definitions", () =>
 });
 
 test("level 1 xp total is 300", () => {
-  assert.equal(getLevelXpTotal(), 300);
+  assert.equal(getLevelXpTotal(), 350);
 });
 
 test("encounter summary returns compact authored output", () => {
   const summary = buildEncounterSummary();
-  assert.equal(summary.length, 5);
+  assert.equal(summary.length, 4);
   assert.deepEqual(summary[0], {
-    id: "a1-scout",
-    areaId: "A1",
+    id: "a2-guard",
+    areaId: "A2",
     enemyCount: 1,
     xpTotal: 25
   });

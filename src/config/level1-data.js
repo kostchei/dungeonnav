@@ -44,11 +44,6 @@ const ENEMY_DEFS = {
 
 const LEVEL_1_ENCOUNTERS = [
   {
-    id: "a1-scout",
-    areaId: "A1",
-    enemyList: ["kobold"]
-  },
-  {
     id: "a2-guard",
     areaId: "A2",
     enemyList: ["kobold"]
@@ -66,7 +61,7 @@ const LEVEL_1_ENCOUNTERS = [
   {
     id: "a4-main-lair",
     areaId: "A4",
-    enemyList: ["kobold", "kobold"]
+    enemyList: ["kobold", "kobold", "kobold", "giantCentipede"]
   }
 ];
 

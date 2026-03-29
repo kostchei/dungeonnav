@@ -66,7 +66,7 @@ const state = {
   dead: false,
   won: false,
   treasureCollected: false,
-  objective: "Enter the kobold cave.",
+  objective: "Push deeper into the cave.",
   progression: createPlayerProgressionState(),
   message: "Click to begin.",
   meleeCooldown: 0,
@@ -323,7 +323,7 @@ function updateObjective() {
   if (state.won || state.treasureCollected) {
     state.objective = "Level complete.";
   } else if (state.encounterTriggered.size === 0) {
-    state.objective = "Enter the kobold cave.";
+    state.objective = "Push deeper into the cave.";
   } else if (!state.encounterCleared.has("a4-main-lair")) {
     state.objective = "Clear the lair and claim its treasure.";
   } else {
