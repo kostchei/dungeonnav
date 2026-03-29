@@ -3,7 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "serve:local": "node scripts/serve-static.js demo 8080",
     "test": "node test/run-tests.js"
+  },
+  "dependencies": {
+    "playcanvas": "^2.17.2",
+    "vite": "^8.0.3"
   }
 }

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DungeonNav Alpha</title>
+  </head>
+  <body>
+    <canvas id="application"></canvas>
+    <div id="hud">
+      <div class="hud-bar">
+        <span id="health">HP 18 / 18</span>
+        <span id="rage">Rage Dormant</span>
+        <span id="xp">XP 0 / 300</span>
+        <span id="ammo">Axes 4</span>
+      </div>
+      <div class="hud-bar">
+        <span id="objective">Enter the kobold cave</span>
+        <span id="level-state">Level 1</span>
+        <span id="reckless-state">Q Reckless: Locked</span>
+      </div>
+      <div id="message"></div>
+      <div id="crosshair">+</div>
+      <div id="overlay">
+        <div class="panel">
+          <h1>DungeonNav Alpha</h1>
+          <p>Click to enter pointer lock.</p>
+          <p>`WASD` move, `Shift` sprint, `Left Click` axe, `Right Click` throw, `E` interact, `R` Rage, `Q` Reckless when unlocked.</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/playcanvas/main.js"></script>
+  </body>
+</html>

@@ -4,7 +4,7 @@
 
 Define the local workflow for hosting and testing a PlayCanvas game during development.
 
-This repo does not yet contain a full PlayCanvas build, so this document covers:
+This repo now contains a local PlayCanvas alpha scaffold, so this document covers:
 
 - how to serve a local browser build
 - what manual checks to run
@@ -31,32 +31,53 @@ Use the PlayCanvas cloud editor preview when:
 - testing script changes already synced to PlayCanvas
 - quickly validating controls, lighting, and asset placement
 
-## Option 2: Local Static Server
+## Option 2: Local Vite Dev Server
 
-Use a local static server when:
+Use the dev server when:
 
-- testing an exported PlayCanvas build
+- iterating on gameplay code
 - testing browser behavior outside the editor
-- reproducing real asset-loading conditions
+- validating hot-reload and runtime errors quickly
 
-This repo includes a simple Node server:
+Run:
+
+```powershell
+cd D:\Code\DungeonNav
+npm run dev
+```
+
+Default local URL:
+
+```text
+http://127.0.0.1:5173
+```
+
+## Option 3: Local Production Build
+
+Use a production build when:
+
+- checking bundling issues
+- validating the final browser output
+- verifying that development-only behavior is not masking errors
+
+Build and preview:
+
+```powershell
+cd D:\Code\DungeonNav
+npm run build
+npm run preview
+```
+
+## Option 4: Static Server For Exported Builds
+
+The repo still includes a simple static server:
 
 ```powershell
 cd D:\Code\DungeonNav
 npm run serve:local
 ```
 
-Default URL:
-
-```text
-http://localhost:8080
-```
-
-## Expected Build Folder
-
-The included local server points at the `demo` folder.
-
-If a PlayCanvas export is added later, place the exported web build there or update the script target.
+That is useful for exported or copied static builds placed in `demo/`.
 
 ## Manual Local Test Checklist
 
@@ -64,7 +85,7 @@ Run these checks whenever there is a playable browser build.
 
 ## Boot And Hosting
 
-- the page loads from `http://localhost`
+- the page loads from the expected localhost URL
 - no 404s appear in the Network tab for scripts, textures, audio, or models
 - no blocking errors appear in the Console at startup
 - the loading state completes without hanging
