@@ -1,0 +1,9 @@
+{
+  "name": "dungeonnav",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve:local": "node scripts/serve-static.js demo 8080",
+    "test": "node test/run-tests.js"
+  }
+}
