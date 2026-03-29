@@ -1,12 +1,14 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
+import test from "node:test";
+import assert from "node:assert/strict";
 
+import encountersModule from "../src/world/encounters.js";
 const {
   buildEncounterSummary,
   getEncounterXpTotal,
   getLevelXpTotal
-} = require("../src/world/encounters");
-const { LEVEL_1_ENCOUNTERS } = require("../src/config/level1-data");
+} = encountersModule;
+import configModule from "../src/config/level1-data.js";
+const { LEVEL_1_ENCOUNTERS } = configModule;
 
 test("individual encounter xp totals are computed from enemy definitions", () => {
   const westRoom = LEVEL_1_ENCOUNTERS.find((encounter) => encounter.id === "a3-west-room");

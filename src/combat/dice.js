@@ -37,7 +37,7 @@ function rollDamage(expression, rng = Math.random) {
   };
 }
 
-module.exports = {
+export {
   parseDamageExpression,
   rollD20,
   rollDamage,

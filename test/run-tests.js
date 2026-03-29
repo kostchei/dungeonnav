@@ -1,28 +1,25 @@
-const assert = require("node:assert/strict");
+import assert from "node:assert/strict";
 
+import resolverModule from "../src/combat/resolver.js";
 const {
   applyDamageMitigation,
   resolveAttack,
   rollAttackD20
-} = require("../src/combat/resolver");
-const { parseDamageExpression, rollDamage } = require("../src/combat/dice");
+} = resolverModule;
+import {  parseDamageExpression, rollDamage  } from "../src/combat/dice.js";
+import progressionModule from "../src/player/progression.js";
 const {
   addXp,
-  applyPendingLevelTransition,
-  createPlayerProgressionState,
-  getPendingLevelTransition
-} = require("../src/player/progression");
-const {
-  createRecklessAttackState,
-  syncRecklessAttackAvailability,
-  toggleRecklessAttack
-} = require("../src/player/reckless-attack");
+  createPlayerProgressionState
+} = progressionModule;
+import encountersModule from "../src/world/encounters.js";
 const {
   buildEncounterSummary,
   getEncounterXpTotal,
   getLevelXpTotal
-} = require("../src/world/encounters");
-const { LEVEL_1_ENCOUNTERS } = require("../src/config/level1-data");
+} = encountersModule;
+import configModule from "../src/config/level1-data.js";
+const { LEVEL_1_ENCOUNTERS } = configModule;
 
 function createSequenceRng(values) {
   let index = 0;
@@ -52,11 +49,11 @@ const tests = [
     }
   },
   {
-    name: "rollAttackD20 uses advantage when reckless attack is active",
+    name: "rollAttackD20 uses supplied rng deterministically",
     fn: () => {
-      const result = rollAttackD20({ recklessAttack: true }, createSequenceRng([0.1, 0.9]));
-      assert.equal(result.roll, 19);
-      assert.equal(result.hasAdvantage, true);
+      const result = rollAttackD20(createSequenceRng([0.1]));
+      assert.equal(result.roll, 3);
+      assert.equal(result.hasAdvantage, false);
     }
   },
   {
@@ -110,52 +107,22 @@ const tests = [
     }
   },
   {
-    name: "progression starts at level 1 with no reckless attack unlocked",
+    name: "progression starts at level 1 with base combat stats",
     fn: () => {
       const state = createPlayerProgressionState();
       assert.equal(state.level, 1);
       assert.equal(state.maxHp, 18);
-      assert.equal(state.unlockFlags.recklessAttack, false);
+      assert.equal(state.meleeBonus, 0);
+      assert.equal(state.recoveryBonus, 0);
     }
   },
   {
-    name: "xp transition becomes pending at 300 xp",
+    name: "xp accumulates without mutating base stats",
     fn: () => {
       const progressed = addXp(createPlayerProgressionState(), 300);
-      const pending = getPendingLevelTransition(progressed);
-      assert.equal(pending.fromLevel, 1);
-      assert.equal(pending.toLevel, 2);
-      assert.equal(pending.nextStats.maxHp, 31);
-    }
-  },
-  {
-    name: "applying level transition updates stats and unlocks reckless attack",
-    fn: () => {
-      const progressed = addXp(createPlayerProgressionState(), 300);
-      const leveled = applyPendingLevelTransition(progressed);
-      assert.equal(leveled.level, 2);
-      assert.equal(leveled.maxHp, 31);
-      assert.equal(leveled.unlockFlags.recklessAttack, true);
-    }
-  },
-  {
-    name: "reckless attack stays unavailable until unlocked",
-    fn: () => {
-      const reckless = createRecklessAttackState();
-      const toggled = toggleRecklessAttack(reckless);
-      assert.equal(toggled.active, false);
-      assert.equal(toggled.selfVulnerability, false);
-    }
-  },
-  {
-    name: "reckless attack can be toggled after progression unlock",
-    fn: () => {
-      const leveled = applyPendingLevelTransition(addXp(createPlayerProgressionState(), 300));
-      const synced = syncRecklessAttackAvailability(createRecklessAttackState(), leveled);
-      const toggled = toggleRecklessAttack(synced);
-      assert.equal(toggled.available, true);
-      assert.equal(toggled.active, true);
-      assert.equal(toggled.selfVulnerability, true);
+      assert.equal(progressed.xp, 300);
+      assert.equal(progressed.level, 1);
+      assert.equal(progressed.maxHp, 18);
     }
   },
   {

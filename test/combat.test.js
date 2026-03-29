@@ -1,12 +1,13 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
+import test from "node:test";
+import assert from "node:assert/strict";
 
+import resolverModule from "../src/combat/resolver.js";
 const {
   applyDamageMitigation,
   resolveAttack,
   rollAttackD20
-} = require("../src/combat/resolver");
-const { parseDamageExpression, rollDamage } = require("../src/combat/dice");
+} = resolverModule;
+import {  parseDamageExpression, rollDamage  } from "../src/combat/dice.js";
 
 function createSequenceRng(values) {
   let index = 0;
@@ -30,10 +31,10 @@ test("rollDamage uses supplied rng deterministically", () => {
   assert.equal(result.total, 5);
 });
 
-test("rollAttackD20 uses advantage when reckless attack is active", () => {
-  const result = rollAttackD20({ recklessAttack: true }, createSequenceRng([0.1, 0.9]));
-  assert.equal(result.roll, 19);
-  assert.equal(result.hasAdvantage, true);
+test("rollAttackD20 uses supplied rng deterministically", () => {
+  const result = rollAttackD20(createSequenceRng([0.1]));
+  assert.equal(result.roll, 3);
+  assert.equal(result.hasAdvantage, false);
 });
 
 test("resolveAttack returns miss when total attack is below AC", () => {

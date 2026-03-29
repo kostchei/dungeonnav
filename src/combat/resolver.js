@@ -1,26 +1,15 @@
-const { rollD20, rollDamage } = require("./dice");
+import { rollD20, rollDamage } from "./dice.js";
 
-function getAttackModifier({ rageActive = false, meleeBonus = 0, recklessAttack = false } = {}) {
+function getAttackModifier({ rageActive = false, meleeBonus = 0 } = {}) {
   return {
     meleeBonus,
-    rageDamageBonus: rageActive ? 2 : 0,
-    hasAdvantage: Boolean(recklessAttack)
+    rageDamageBonus: rageActive ? 2 : 0
   };
 }
 
-function rollAttackD20({ recklessAttack = false } = {}, rng = Math.random) {
-  if (!recklessAttack) {
-    const roll = rollD20(rng);
-    return { roll, rolls: [roll], hasAdvantage: false };
-  }
-
-  const first = rollD20(rng);
-  const second = rollD20(rng);
-  return {
-    roll: Math.max(first, second),
-    rolls: [first, second],
-    hasAdvantage: true
-  };
+function rollAttackD20(rng = Math.random) {
+  const roll = rollD20(rng);
+  return { roll, rolls: [roll], hasAdvantage: false };
 }
 
 function resolveAttack({
@@ -28,10 +17,9 @@ function resolveAttack({
   armorClass,
   damageExpression,
   rageActive = false,
-  meleeBonus = 0,
-  recklessAttack = false
+  meleeBonus = 0
 }, rng = Math.random) {
-  const d20Result = rollAttackD20({ recklessAttack }, rng);
+  const d20Result = rollAttackD20(rng);
   const natural20 = d20Result.rolls.includes(20);
   const totalAttack = d20Result.roll + attackBonus;
   const hit = natural20 || totalAttack >= armorClass;
@@ -46,7 +34,7 @@ function resolveAttack({
   }
 
   const damageRoll = rollDamage(damageExpression, rng);
-  const modifier = getAttackModifier({ rageActive, meleeBonus, recklessAttack });
+  const modifier = getAttackModifier({ rageActive, meleeBonus });
   let totalDamage = damageRoll.total + modifier.meleeBonus + modifier.rageDamageBonus;
 
   if (natural20) {
@@ -75,7 +63,7 @@ function applyDamageMitigation(damage, { rageActive = false, damageType = "physi
   return damage;
 }
 
-module.exports = {
+export default {
   applyDamageMitigation,
   getAttackModifier,
   resolveAttack,

@@ -1,24 +1,8 @@
-const LEVEL_2_XP_THRESHOLD = 300;
-
-const PLAYER_LEVELS = {
-  1: {
-    level: 1,
-    maxHp: 18,
-    meleeBonus: 0,
-    recoveryBonus: 0,
-    unlockFlags: {
-      recklessAttack: false
-    }
-  },
-  2: {
-    level: 2,
-    maxHp: 31,
-    meleeBonus: 1,
-    recoveryBonus: 1,
-    unlockFlags: {
-      recklessAttack: true
-    }
-  }
+const PLAYER_BASE_STATS = {
+  level: 1,
+  maxHp: 18,
+  meleeBonus: 0,
+  recoveryBonus: 0
 };
 
 const ENEMY_DEFS = {
@@ -86,9 +70,8 @@ const LEVEL_1_ENCOUNTERS = [
   }
 ];
 
-module.exports = {
+export default {
   ENEMY_DEFS,
   LEVEL_1_ENCOUNTERS,
-  LEVEL_2_XP_THRESHOLD,
-  PLAYER_LEVELS
+  PLAYER_BASE_STATS
 };

@@ -1,13 +1,13 @@
-const { LEVEL_2_XP_THRESHOLD, PLAYER_LEVELS } = require("../config/level1-data");
+import configModule from "../config/level1-data.js";
+const { PLAYER_BASE_STATS } = configModule;
 
 function createPlayerProgressionState() {
   return {
-    level: 1,
+    level: PLAYER_BASE_STATS.level,
     xp: 0,
-    maxHp: PLAYER_LEVELS[1].maxHp,
-    meleeBonus: PLAYER_LEVELS[1].meleeBonus,
-    recoveryBonus: PLAYER_LEVELS[1].recoveryBonus,
-    unlockFlags: { ...PLAYER_LEVELS[1].unlockFlags }
+    maxHp: PLAYER_BASE_STATS.maxHp,
+    meleeBonus: PLAYER_BASE_STATS.meleeBonus,
+    recoveryBonus: PLAYER_BASE_STATS.recoveryBonus
   };
 }
 
@@ -23,37 +23,7 @@ function addXp(state, amount) {
   };
 }
 
-function getPendingLevelTransition(state) {
-  if (state.level >= 2 || state.xp < LEVEL_2_XP_THRESHOLD) {
-    return null;
-  }
-
-  return {
-    fromLevel: state.level,
-    toLevel: 2,
-    nextStats: PLAYER_LEVELS[2]
-  };
-}
-
-function applyPendingLevelTransition(state) {
-  const transition = getPendingLevelTransition(state);
-  if (!transition) {
-    return state;
-  }
-
-  return {
-    ...state,
-    level: transition.nextStats.level,
-    maxHp: transition.nextStats.maxHp,
-    meleeBonus: transition.nextStats.meleeBonus,
-    recoveryBonus: transition.nextStats.recoveryBonus,
-    unlockFlags: { ...transition.nextStats.unlockFlags }
-  };
-}
-
-module.exports = {
+export default {
   addXp,
-  applyPendingLevelTransition,
-  createPlayerProgressionState,
-  getPendingLevelTransition
+  createPlayerProgressionState
 };

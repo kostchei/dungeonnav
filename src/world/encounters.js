@@ -1,4 +1,5 @@
-const { ENEMY_DEFS, LEVEL_1_ENCOUNTERS } = require("../config/level1-data");
+import configModule from "../config/level1-data.js";
+const { ENEMY_DEFS, LEVEL_1_ENCOUNTERS } = configModule;
 
 function getEncounterXpTotal(encounter, enemyDefs = ENEMY_DEFS) {
   return encounter.enemyList.reduce((total, enemyId) => total + enemyDefs[enemyId].xpValue, 0);
@@ -17,7 +18,7 @@ function buildEncounterSummary(encounters = LEVEL_1_ENCOUNTERS, enemyDefs = ENEM
   }));
 }
 
-module.exports = {
+export default {
   buildEncounterSummary,
   getEncounterXpTotal,
   getLevelXpTotal
